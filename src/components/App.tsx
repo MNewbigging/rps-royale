@@ -6,15 +6,10 @@ import { MainMenu } from "./main-menu/main-menu";
 export function App() {
   useEventUpdater("game-started");
 
-  let screen: JSX.Element;
+  let screen: JSX.Element = <MainMenu />;
 
-  switch (appState.screen) {
-    case Screen.MainMenu:
-      screen = <MainMenu />;
-      break;
-    case Screen.Game:
-      screen = <GameScreen />;
-      break;
+  if (appState.screen === Screen.Game && appState.game) {
+    screen = <GameScreen game={appState.game} />;
   }
 
   return screen;
