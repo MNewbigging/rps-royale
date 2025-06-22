@@ -1,4 +1,4 @@
-import { RPS } from "../../../app-state/bot-game";
+import { RPS } from "../../../app-state/bot-game-manager";
 import "./rps-picker.scss";
 
 interface RpsPickerProps {

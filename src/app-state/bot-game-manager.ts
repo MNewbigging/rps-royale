@@ -1,42 +1,23 @@
-import { eventListener } from "../events/event-listener";
+import { Bot } from "./bot";
 import { Player } from "./player";
-
-export enum RPS {
-  Rock = "rock",
-  Paper = "paper",
-  Scissors = "scissors",
-}
-
-export enum GameStage {
-  Choose, // presented rps choices, must pick one
-  Wait, // for other player to make their choice
-  Reveal, // show both choices, reveal winner (after a few seconds)
-  Ladder, // if you lost takes you to current game ladder (should update in realtime)
-}
+import { getRoundResult, RoundResult, RpsGame } from "./rps-game";
 
 interface Pair {
   a: Player;
   b: Player;
 }
 
-export class BotGame {
+export class BotGameManager {
   players: Player[] = [];
   rungs: Pair[][] = [];
 
-  stage: GameStage = GameStage.Choose;
-
-  currentPlayerChoice?: RPS;
-  currentBotChoice?: RPS;
-
-  constructor(private player: Player, private size = 8) {
-    // Create bots for this game
+  constructor(public player: Player, private size = 8) {
+    // Players array starts filled with bots + player
     this.setupPlayers();
 
-    // Get pairs for first rung of the ladder
+    // Divide players into pairs
     const pairs = this.getPairs();
     this.rungs.push(pairs);
-
-    console.log("first rung", pairs);
   }
 
   getPlayerOpponent() {
@@ -51,28 +32,24 @@ export class BotGame {
     }
   }
 
-  choose(playerChoice: RPS) {
-    console.log("player chose", playerChoice);
-
-    // Now get random bot choice
-    const botChoice = randomRps();
-    this.currentBotChoice = botChoice;
-
-    // Show it
-    this.stage = GameStage.Reveal;
-    eventListener.fire("show-choices", null);
-  }
-
   private setupPlayers() {
     // Add local player
     this.players.push(this.player);
-    // Fill with fake players
+
+    // Fill remaining slots with bots
     for (let i = 1; i < this.size; i++) {
-      this.players.push({
-        id: crypto.randomUUID(),
-        name: `Bot ${i}`,
-      });
+      this.players.push(new Bot(`Bot ${i}`));
     }
+  }
+
+  private nextStage() {
+    // Pair remaining players
+    const pairs = this.getPairs();
+
+    // Start a game with player pair
+    const rpsGame = new RpsGame(this.player, ...);
+
+    // Simulate the other bot games.
   }
 
   private getPairs() {
@@ -91,6 +68,8 @@ export class BotGame {
 
     return pairs;
   }
+
+
 }
 
 function shuffleArray(array: any[]) {
