@@ -47,11 +47,8 @@ class AppState {
     server.joinLobby(this.player);
 
     // Show lobby screen
+    this.screen = Screen.Lobby;
     eventListener.fire("joined-lobby", null);
-
-    this.game = new Game();
-
-    eventListener.fire("game-started", null);
   };
 
   private loadPlayer(): Player | undefined {
