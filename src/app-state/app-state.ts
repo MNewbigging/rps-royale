@@ -1,5 +1,7 @@
 class AppState {
-  constructor() {}
+  newGame = () => {
+    console.log("new game");
+  };
 }
 
 export const appState = new AppState();
