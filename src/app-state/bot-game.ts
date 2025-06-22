@@ -19,13 +19,11 @@ interface Pair {
   b: Player;
 }
 
-interface Rung {
-  pairs: Pair[];
-}
-
 export class BotGame {
   players: Player[] = [];
   rungs: Pair[][] = [];
+
+  stage: GameStage = GameStage.Choose;
 
   currentPlayerChoice?: RPS;
   currentBotChoice?: RPS;
@@ -61,6 +59,7 @@ export class BotGame {
     this.currentBotChoice = botChoice;
 
     // Show it
+    this.stage = GameStage.Reveal;
     eventListener.fire("show-choices", null);
   }
 

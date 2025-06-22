@@ -1,0 +1,16 @@
+.rps-picker {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .btn {
+    border: 1px solid black;
+    padding: 10px;
+    cursor: pointer;
+  }
+}

@@ -1,6 +1,8 @@
 import { appState } from "../../app-state/app-state";
-import { BotGame, RPS } from "../../app-state/bot-game";
+import { BotGame, GameStage, RPS } from "../../app-state/bot-game";
+import { useEventUpdater } from "../../hooks/use-event-updater";
 import "./game-screen.scss";
+import { RpsPicker } from "./rps-picker/rps-picker";
 
 interface GameScreenProps {
   game: BotGame;
@@ -17,22 +19,13 @@ interface GameScreenProps {
  */
 
 export function GameScreen({ game }: GameScreenProps) {
-  const opponent = game.getPlayerOpponent()?.name ?? "";
+  useEventUpdater("show-choices");
 
-  return (
-    <div className="game-screen">
-      <div className="vs">Opponent: {opponent}</div>
-      <div className="rps">
-        <div className="rock-btn" onClick={() => game.choose(RPS.Rock)}>
-          Rock
-        </div>
-        <div className="paper-btn" onClick={() => game.choose(RPS.Paper)}>
-          Paper
-        </div>
-        <div className="scissors-btn" onClick={() => game.choose(RPS.Scissors)}>
-          Scissors
-        </div>
-      </div>
-    </div>
-  );
+  switch (game.stage) {
+    case GameStage.Choose:
+      return <RpsPicker onChoose={game.choose} />;
+
+    default:
+      return <div>Error in GameScreen switch</div>;
+  }
 }

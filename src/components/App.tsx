@@ -17,5 +17,7 @@ export function App() {
       return <LobbyScreen />;
     case Screen.Game:
       if (appState.game) return <GameScreen game={appState.game} />;
+    default:
+      return <div>error in App switch</div>;
   }
 }
