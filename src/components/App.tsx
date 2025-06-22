@@ -1,7 +1,5 @@
-import "./app.scss";
-
-import { appState } from "../app-state/app-state";
+import { MainMenu } from "./main-menu/main-menu";
 
 export function App() {
-  return <div className="ui-root">RPS ROYALE</div>;
+  return <MainMenu />;
 }
