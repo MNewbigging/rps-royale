@@ -6,7 +6,7 @@ export function MainMenu() {
   return (
     <div className="main-menu">
       <p>Welcome {appState.player?.name}!</p>
-      <Button text="Play offline" onClick={appState.newGame} />
+      <Button text="Play" onClick={appState.play} />
     </div>
   );
 }

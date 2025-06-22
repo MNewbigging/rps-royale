@@ -1,22 +1,16 @@
-import { appState } from "../app-state/app-state";
+import { appState, Screen } from "../app-state/app-state";
 import { useEventUpdater } from "../hooks/use-event-updater";
-import { GameScreen } from "./game-screen/game-screen";
 import { MainMenu } from "./main-menu/main-menu";
 import { NameScreen } from "./name-screen/name-screen";
 
 export function App() {
-  useEventUpdater("created-player", "game-started");
+  useEventUpdater("created-player", "joined-lobby", "game-started");
+  console.log("app render");
 
-  // If the player is new (not cached from previous session)
-  if (!appState.player) {
-    return <NameScreen />;
+  switch (appState.screen) {
+    case Screen.Name:
+      return <NameScreen />;
+    case Screen.MainMenu:
+      return <MainMenu />;
   }
-
-  // If there is no game in progress
-  if (!appState.game) {
-    return <MainMenu />;
-  }
-
-  // Show the game in progress
-  return <GameScreen game={appState.game} />;
 }

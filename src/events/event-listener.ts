@@ -1,5 +1,6 @@
 export interface EventMap {
   "created-player": null;
+  "joined-lobby": null;
   "game-started": null;
   "show-choices": null;
 }

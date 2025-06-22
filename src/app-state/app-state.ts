@@ -1,14 +1,29 @@
 import { eventListener } from "../events/event-listener";
 import { Game } from "./game";
 import { Player } from "./player";
+import { server } from "./server-mock";
+
+export enum Screen {
+  Name,
+  MainMenu,
+  Lobby,
+  Game,
+}
 
 class AppState {
+  screen: Screen;
   player?: Player;
   game?: Game;
 
   constructor() {
     // Check local storage for existing player data
-    this.loadPlayer();
+    const player = this.loadPlayer();
+    if (player) {
+      this.player = player;
+      this.screen = Screen.MainMenu; // can skip the name screen
+    } else {
+      this.screen = Screen.Name; // player needs to set name first
+    }
   }
 
   createPlayer(name: string) {
@@ -19,22 +34,31 @@ class AppState {
     // Save in localstorage
     localStorage.setItem("player", JSON.stringify(this.player));
 
+    // Change screen
+    this.screen = Screen.MainMenu;
+
     eventListener.fire("created-player", null);
   }
 
-  newGame = () => {
-    console.log("new offline game");
+  play = () => {
+    if (!this.player) return;
+
+    // Join the game lobby
+    server.joinLobby(this.player);
+
+    // Show lobby screen
+    eventListener.fire("joined-lobby", null);
 
     this.game = new Game();
 
     eventListener.fire("game-started", null);
   };
 
-  private loadPlayer() {
+  private loadPlayer(): Player | undefined {
     const playerJson = localStorage.getItem("player");
-    if (!playerJson) return;
+    if (!playerJson) return undefined;
 
-    this.player = JSON.parse(playerJson);
+    return JSON.parse(playerJson) as Player;
   }
 }
 
