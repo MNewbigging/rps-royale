@@ -1,5 +1,5 @@
 import { eventListener } from "../events/event-listener";
-import { Game } from "./game";
+import { BotGame } from "./bot-game";
 import { Player } from "./player";
 import { server } from "./server-mock";
 
@@ -13,7 +13,7 @@ export enum Screen {
 class AppState {
   screen: Screen;
   player?: Player;
-  game?: Game;
+  game?: BotGame;
 
   constructor() {
     // Check local storage for existing player data
@@ -40,7 +40,7 @@ class AppState {
     eventListener.fire("created-player", null);
   }
 
-  play = () => {
+  playOnline = () => {
     if (!this.player) return;
 
     // Join the game lobby
@@ -49,6 +49,14 @@ class AppState {
     // Show lobby screen
     this.screen = Screen.Lobby;
     eventListener.fire("joined-lobby", null);
+  };
+
+  playOffline = () => {
+    if (!this.player) return;
+
+    this.game = new BotGame(this.player);
+    this.screen = Screen.Game;
+    eventListener.fire("game-started", null);
   };
 
   private loadPlayer(): Player | undefined {

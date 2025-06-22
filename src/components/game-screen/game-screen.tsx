@@ -1,8 +1,9 @@
-import { Game, RPS } from "../../app-state/game";
+import { appState } from "../../app-state/app-state";
+import { BotGame, RPS } from "../../app-state/bot-game";
 import "./game-screen.scss";
 
 interface GameScreenProps {
-  game: Game;
+  game: BotGame;
 }
 
 /**
@@ -16,9 +17,11 @@ interface GameScreenProps {
  */
 
 export function GameScreen({ game }: GameScreenProps) {
+  const opponent = game.getPlayerOpponent()?.name ?? "";
+
   return (
     <div className="game-screen">
-      <div className="vs">Opponent: Bot</div>
+      <div className="vs">Opponent: {opponent}</div>
       <div className="rps">
         <div className="rock-btn" onClick={() => game.choose(RPS.Rock)}>
           Rock
