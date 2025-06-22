@@ -1,5 +1,4 @@
 export interface EventMap {
-  "game-loaded": null;
   "game-started": null;
 }
 

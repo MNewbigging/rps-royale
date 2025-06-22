@@ -5,7 +5,7 @@ import "./main-menu.scss";
 export function MainMenu() {
   return (
     <div className="main-menu">
-      <Button text="Play" onClick={appState.newGame} />
+      <Button text="Play offline" onClick={appState.newGame} />
     </div>
   );
 }
